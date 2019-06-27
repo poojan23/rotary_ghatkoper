@@ -22,21 +22,21 @@ class ControllerCommonNav extends PT_Controller
             # Catalog
             $catalog = array();
                         
-            if ($this->user->hasPermission('access', 'catalog/austin_governor')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_austin_governor'),
-                    'href'      => $this->url->link('catalog/austin_governor', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
+//            if ($this->user->hasPermission('access', 'catalog/austin_governor')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_austin_governor'),
+//                    'href'      => $this->url->link('catalog/austin_governor', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
             
-            if ($this->user->hasPermission('access', 'catalog/category')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_category'),
-                    'href'      => $this->url->link('catalog/category', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
+//            if ($this->user->hasPermission('access', 'catalog/category')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_category'),
+//                    'href'      => $this->url->link('catalog/category', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
             
 //            if ($this->user->hasPermission('access', 'catalog/club')) {
 //                $catalog[] = array(
@@ -54,21 +54,21 @@ class ControllerCommonNav extends PT_Controller
 //                );
 //            }
                         
-            if ($this->user->hasPermission('access', 'catalog/team')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_team'),
-                    'href'      => $this->url->link('catalog/team', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
-                        
-            if ($this->user->hasPermission('access', 'catalog/citation')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_citation'),
-                    'href'      => $this->url->link('catalog/citation', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
+//            if ($this->user->hasPermission('access', 'catalog/team')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_team'),
+//                    'href'      => $this->url->link('catalog/team', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
+//                        
+//            if ($this->user->hasPermission('access', 'catalog/citation')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_citation'),
+//                    'href'      => $this->url->link('catalog/citation', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
             
             if ($this->user->hasPermission('access', 'catalog/information')) {
                 $catalog[] = array(
@@ -85,30 +85,37 @@ class ControllerCommonNav extends PT_Controller
                     'children'  => array()
                 );
             }
-
-            if ($this->user->hasPermission('access', 'catalog/governor')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_governor'),
-                    'href'      => $this->url->link('catalog/governor', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
             
-            if ($this->user->hasPermission('access', 'catalog/gml')) {
+             if ($this->user->hasPermission('access', 'catalog/download')) {
                 $catalog[] = array(
-                    'name'      => $this->language->get('text_gml'),
-                    'href'      => $this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token']),
+                    'name'      => $this->language->get('text_download'),
+                    'href'      => $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']),
                     'children'  => array()
                 );
             }
-            
-            if ($this->user->hasPermission('access', 'catalog/center')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_center'),
-                    'href'      => $this->url->link('catalog/center', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
+//            if ($this->user->hasPermission('access', 'catalog/governor')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_governor'),
+//                    'href'      => $this->url->link('catalog/governor', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
+//            
+//            if ($this->user->hasPermission('access', 'catalog/gml')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_gml'),
+//                    'href'      => $this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
+//            
+//            if ($this->user->hasPermission('access', 'catalog/center')) {
+//                $catalog[] = array(
+//                    'name'      => $this->language->get('text_center'),
+//                    'href'      => $this->url->link('catalog/center', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
 
             if ($catalog) {
                 $data['menus'][] = array(
@@ -130,14 +137,6 @@ class ControllerCommonNav extends PT_Controller
                     'children'  => array()
                 );
             }
-            
-            if ($this->user->hasPermission('access', 'design/translation')) {
-                $design[] = array(
-                    'name'      => $this->language->get('text_language_editor'),
-                    'href'      => $this->url->link('design/translation', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
 
             if ($design) {
                 $data['menus'][] = array(
@@ -148,46 +147,89 @@ class ControllerCommonNav extends PT_Controller
                     'children'  => $design
                 );
             }
-
-            # Enquiry
-            if ($this->user->hasPermission('access', 'common/enquiry')) {
-                $data['menus'][] = array(
-                    'id'        => 'menu-enquiry',
-                    'icon'      => 'fa-envelope',
-                    'name'      => $this->language->get('text_enquiry'),
-                    'href'      => $this->url->link('common/enquiry', 'user_token=' . $this->session->data['user_token']),
+            
+            # Event
+            $event = array();
+            
+            if ($this->user->hasPermission('access', 'catalog/event')) {
+                $event[] = array(
+                    'name'      => $this->language->get('text_event'),
+                    'href'      => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']),
                     'children'  => array()
                 );
             }
-
-            # Testimonial
-            if ($this->user->hasPermission('access', 'common/testimonial')) {
+   
+            if ($event) {
                 $data['menus'][] = array(
-                    'id'        => 'menu-testimonial',
-                    'icon'      => 'fa-pen-alt',
-                    'name'      => $this->language->get('text_testimonial'),
-                    'href'      => $this->url->link('common/testimonial', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_event'),
+                    'href'      => '',
+                    'children'  => $event
                 );
             }
             
-            # Exchange Rate
-            $data['menus'][] = array(
-                'id'        => 'menu-review',
-                'icon'      => 'fa-money-bill-alt',
-                'name'      => $this->language->get('text_exchange_rate'),
-                'href'      => $this->url->link('catalog/exchange_rate', 'user_token=' . $this->session->data['user_token']),
-                'children'  => array()
-            );
+            # Project
+            $project = array();
             
-            # Review
-            $data['menus'][] = array(
-                'id'        => 'menu-review',
-                'icon'      => 'fa-comment-alt',
-                'name'      => $this->language->get('text_club'),
-                'href'      => $this->url->link('catalog/club', 'user_token=' . $this->session->data['user_token']),
-                'children'  => array()
-            );
+            if ($this->user->hasPermission('access', 'catalog/project')) {
+                $project[] = array(
+                    'name'      => $this->language->get('text_project'),
+                    'href'      => $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+   
+            if ($project) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_project'),
+                    'href'      => '',
+                    'children'  => $project
+                );
+            }
+            
+
+//            # Enquiry
+//            if ($this->user->hasPermission('access', 'common/enquiry')) {
+//                $data['menus'][] = array(
+//                    'id'        => 'menu-enquiry',
+//                    'icon'      => 'fa-envelope',
+//                    'name'      => $this->language->get('text_enquiry'),
+//                    'href'      => $this->url->link('common/enquiry', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
+//
+//            # Testimonial
+//            if ($this->user->hasPermission('access', 'common/testimonial')) {
+//                $data['menus'][] = array(
+//                    'id'        => 'menu-testimonial',
+//                    'icon'      => 'fa-pen-alt',
+//                    'name'      => $this->language->get('text_testimonial'),
+//                    'href'      => $this->url->link('common/testimonial', 'user_token=' . $this->session->data['user_token']),
+//                    'children'  => array()
+//                );
+//            }
+//            
+//            # Exchange Rate
+//            $data['menus'][] = array(
+//                'id'        => 'menu-review',
+//                'icon'      => 'fa-money-bill-alt',
+//                'name'      => $this->language->get('text_exchange_rate'),
+//                'href'      => $this->url->link('catalog/exchange_rate', 'user_token=' . $this->session->data['user_token']),
+//                'children'  => array()
+//            );
+            
+//            # Review
+//            $data['menus'][] = array(
+//                'id'        => 'menu-review',
+//                'icon'      => 'fa-comment-alt',
+//                'name'      => $this->language->get('text_club'),
+//                'href'      => $this->url->link('catalog/club', 'user_token=' . $this->session->data['user_token']),
+//                'children'  => array()
+//            );
             # Settings
             # System
             $system = array();
