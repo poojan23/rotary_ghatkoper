@@ -1,0 +1,304 @@
+<?php echo $header; ?>
+<?php echo $nav; ?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?php echo $heading_title; ?></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <?php for($i = 0; $i < count($breadcrumbs); $i++) : ?>
+                        <?php if($i != (count($breadcrumbs) - 1)) : ?>
+                        <?php if($i == 0) : ?>
+                        <li class="breadcrumb-item">
+                            <i class="nav-icon fa fa-home"></i>
+                            <a href="<?php echo $breadcrumbs[$i]['href']; ?>">
+                                <?php echo $breadcrumbs[$i]['text']; ?>
+                            </a>
+                        </li>
+                        <?php else : ?>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo $breadcrumbs[$i]['href']; ?>">
+                                <?php echo $breadcrumbs[$i]['text']; ?>
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                        <?php else : ?>
+                        <li class="breadcrumb-item active"><?php echo $breadcrumbs[$i]['text']; ?></li>
+                        <?php endif; ?>
+                        <?php endfor; ?>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-12">
+                <?php if ($warning_err) : ?>
+                <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i>
+                    <?php echo $warning_err; ?>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+                <?php endif; ?>
+
+                <div class="clearfix">
+                    <div class="float-right tableTools-container">
+                        <button type="submit" form="form-team" data-toggle="tooltip"
+                                title="<?php echo $button_save; ?>" class="btn btn-primary btn-bold"><i
+                                class="fa fa-save"></i></button>
+                        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>"
+                           class="btn btn-default btn-bold"><i class="fa fa-reply"></i></a>
+
+                    </div>
+                </div>
+            </div>
+            <!-- right column -->
+            <div class="col-12">
+                <!-- Horizontal Form -->
+                <div class="card card-info card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-pencil-alt"></i>
+                            <?php echo $text_form; ?>
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="<?php echo $action; ?>" method="POST" enctype="multipart/form-data"
+                          id="form-team" class="form-horizontal">
+                        <div class="card-body">
+                            <div class="form-group row required">
+                                <label for="input-date" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_date; ?></label>
+
+                                <div class="col-sm-10">
+                                    <?php $curr_date = date("Y-m");?>
+                                    <?php if ($date): ?>
+                                    <input type="month" name="date" value="<?php echo $date; ?>" class="form-control" id="input-date" />
+                                    <?php else : ?>
+                                    <input type="month" name="date" value="<?php echo $curr_date; ?>" class="form-control" id="input-date" />
+                                    <?php endif; ?>
+                                    <?php if($date_err) : ?>
+                                    <span class="help-block">
+                                        <?php echo $date_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="input-austin-governor" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_governor; ?></label>
+
+                                <div class="col-sm-10">
+                                    <select name="austin_governor_id" class="form-control" id="input-austin-governor">
+                                        <?php foreach($austin_governors as $austin_governor) : ?>
+                                        <?php if($austin_governor['user_id'] == $user_id) : ?>
+                                        <option value="<?php echo $austin_governor['user_id']; ?>" selected="selected">
+                                            <?php echo $austin_governor['name']; ?>
+                                        </option>
+                                        <?php else : ?>
+                                        <option value="<?php echo $austin_governor['user_id']; ?>">
+                                            <?php echo $austin_governor['name']; ?>
+                                        </option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label for="input-name" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_name; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="name" value="<?php echo $name; ?>"
+                                           placeholder="<?php echo $entry_name; ?>" class="form-control"
+                                           id="input-name" />
+                                    <?php if($name_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $name_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label for="input-secretary" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_secretary; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="secretary" value="<?php echo $secretary; ?>"
+                                           placeholder="<?php echo $entry_secretary; ?>" class="form-control"
+                                           id="input-secretory" />
+                                    <?php if($secretary_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $secretary_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+<!--                            <div class="form-group row required">
+                                <label for="input-governor" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_governor; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="governor" value="<?php echo $governor; ?>"
+                                           placeholder="<?php echo $entry_governor; ?>" class="form-control"
+                                           id="input-governor" />
+                                    <?php if($governor_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $governor_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>-->
+
+                            <div class="form-group row required">
+                                <label for="input-president" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_president; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="president" value="<?php echo $president; ?>"
+                                           placeholder="<?php echo $entry_president; ?>" class="form-control"
+                                           id="input-president" />
+                                    <?php if($president_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $president_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label for="input-mobile" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_mobile; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="mobile" value="<?php echo $mobile; ?>"
+                                           placeholder="<?php echo $entry_mobile; ?>" class="form-control"
+                                           id="input-mobile" />
+                                    <?php if($mobile_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $mobile_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label for="input-email" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_email; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="email" name="email" value="<?php echo $email; ?>"
+                                           placeholder="<?php echo $entry_email; ?>" class="form-control"
+                                           id="input-email" />
+                                    <?php if($email_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $email_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label for="input-password" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_password; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="password" name="password" value="<?php echo $password; ?>"
+                                           placeholder="<?php echo $entry_password; ?>" class="form-control"
+                                           id="input-password" />
+                                    <?php if($password_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $password_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label for="input-website" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_website; ?></label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" name="website" value="<?php echo $website; ?>"
+                                           placeholder="<?php echo $entry_website; ?>" class="form-control"
+                                           id="input-website" />
+                                    <?php if($website_err) : ?>
+                                    <span class="invalid-tooltip">
+                                        <?php echo $website_err; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="input-image" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_image; ?></label>
+
+                                <div class="col-sm-10">
+                                    <div class="card image">
+                                        <a href="" id="thumb-image" data-toggle="image">
+                                            <img src="<?php echo $thumb; ?>" alt="" title="" id="thumb-image"
+                                                 data-placeholder="<?php echo $placeholder; ?>" class="card-img-top" />
+                                        </a>
+                                        <input type="hidden" name="image" value="<?php echo $image; ?>"
+                                               id="input-image" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="input-club" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_parent; ?></label>
+
+                                <div class="col-sm-10">
+                                    <select name="parent_id" class="form-control" id="input-club">
+                                        <option value="0">
+                                            None
+                                        </option>
+                                        <?php foreach($clubs as $club) : ?>
+                                        <?php if($club['club_id'] == $club_id) : ?>
+                                        <option value="<?php echo $club['club_id']; ?>" selected="selected">
+                                            <?php echo $club['club_name']; ?>
+                                        </option>
+                                        <?php else : ?>
+                                        <option value="<?php echo $club['club_id']; ?>">
+                                            <?php echo $club['club_name']; ?>
+                                        </option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="input-status" class="col-sm-2 col-form-label">
+                                    <?php echo $entry_status; ?></label>
+
+                                <div class="col-sm-10">
+                                    <select name="status" id="input-status" class="form-control">
+                                        <?php if($status) :?>
+                                        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                                        <option value="0"><?php echo $text_disabled; ?></option>
+                                        <?php else : ?>
+                                        <option value="1"><?php echo $text_enabled; ?></option>
+                                        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </form>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<?php echo $footer; ?>
