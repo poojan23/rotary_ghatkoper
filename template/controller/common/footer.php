@@ -37,6 +37,7 @@ class ControllerCommonFooter extends PT_Controller
                 $url = '';
             }
 
+
             if (isset($this->request->server['HTTP_REFERER'])) {
                 $referer = $this->request->server['HTTP_REFERER'];
             } else {
@@ -45,6 +46,13 @@ class ControllerCommonFooter extends PT_Controller
 
             $this->model_tool_online->addOnline($ip, $url, $referer);
         }
+
+        $data['home'] = $this->url->link('common/home');
+        $data['about'] = $this->url->link('information/about');
+        $data['project'] = $this->url->link('information/project');
+        $data['event'] = $this->url->link('information/event');
+        $data['club'] = $this->url->link('information/club');
+        $data['sitemap'] = $this->url->link('information/sitemap');
 
         $data['home'] = $this->url->link('common/home', 'language=' . $this->config->get('config_language'));
         $data['crawler'] = $this->url->link('common/crawler', 'language=' . $this->config->get('config_language'));

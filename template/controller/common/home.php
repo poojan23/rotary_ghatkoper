@@ -59,6 +59,7 @@ class ControllerCommonHome extends PT_Controller
         # Testimonials
         // $this->load->model('catalog/testimonial');
 
+
         // $data['testimonials'] = array();
 
         // $results = $this->model_catalog_testimonial->getTestimonials(0, 6);
@@ -90,10 +91,16 @@ class ControllerCommonHome extends PT_Controller
         // $data['client_icon'] = $this->config->get('config_client_icon');
         // $data['client'] = $this->config->get('config_client');
 
-//        $data['visitor_icon'] = $this->config->get('config_visitor_icon');
-//        $data['visitor'] = ($this->model_tool_online->getTotalOnlines() > 9999) ? '9999' : $this->model_tool_online->getTotalOnlines();
+        // $data['visitor_icon'] = $this->config->get('config_visitor_icon');
+        // $data['visitor'] = ($this->model_tool_online->getTotalOnlines() > 9999) ? '9999' : $this->model_tool_online->getTotalOnlines();
 
         # Blog
+        # Contact
+        $data['address'] = nl2br($this->config->get('config_address'));
+        $data['telephone'] = $this->config->get('config_telephone');
+        $data['email'] = $this->config->get('config_email');
+        $data['open'] = preg_replace("/^(.*)<br.*\/?>/m", '<p>$1</p><p>', nl2br($this->config->get('config_open')));
+
 
         $data['header'] = $this->load->controller('common/header');
         $data['nav'] = $this->load->controller('common/nav');

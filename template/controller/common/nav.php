@@ -10,18 +10,27 @@ class ControllerCommonNav extends PT_Controller
 
         if (is_file(DIR_IMAGE . $this->config->get('config_logo')) && is_file(DIR_IMAGE . $this->config->get('config_district_logo')) && is_file(DIR_IMAGE . $this->config->get('config_governor_logo'))) {
             $data['logo'] = $this->config->get('config_url') . 'image/' . $this->config->get('config_logo');
+            
             $data['district_logo'] = $this->config->get('config_url') . 'image/' . $this->config->get('config_district_logo');
             $data['governor_logo'] = $this->config->get('config_url') . 'image/' . $this->config->get('config_governor_logo');
         } else {
+            
             $data['logo'] = '';
             $data['district_logo'] = '';
             $data['governor_logo'] = '';
         }
 
+
         $data['home'] = $this->url->link('common/home');
         $data['contact'] = $this->url->link('information/contact');
-        $data['club'] = $this->url->link('club/login');
-        $data['admin'] = HTTP_SERVER.'admin';
+        $data['about'] = $this->url->link('information/about');
+        $data['project'] = $this->url->link('information/project');
+        $data['event'] = $this->url->link('information/event');
+        $data['club'] = $this->url->link('information/club');
+        $data['news'] = $this->url->link('information/news');
+        $data['download'] = $this->url->link('information/download');
+        // $data['club'] = $this->url->link('club/login');
+        // $data['admin'] = HTTP_SERVER.'admin';
         # information
         $this->load->model('information/information_group');
         $this->load->model('information/information');
