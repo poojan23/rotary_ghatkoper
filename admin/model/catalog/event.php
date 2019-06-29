@@ -3,7 +3,7 @@
 class ModelCatalogEvent extends PT_Model {
 
     public function addEvent($data) {
-        $this->db->query("INSERT INTO " . DB_PREFIX . "events SET  date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['event_name']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
+        $this->db->query("INSERT INTO " . DB_PREFIX . "events SET  date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['event_name']) . "',event_url = '" . $this->db->escape((string) $data['event_url']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
 
         $event_id = $this->db->lastInsertId();
 
@@ -32,7 +32,7 @@ class ModelCatalogEvent extends PT_Model {
     }
 
     public function editEvent($event_id, $data) {
-        $this->db->query("UPDATE " . DB_PREFIX . "events SET date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['event_name']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW() WHERE event_id = '" . (int) $event_id . "'");
+        $this->db->query("UPDATE " . DB_PREFIX . "events SET date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['event_name']) . "',event_url = '" . $this->db->escape((string) $data['event_url']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW() WHERE event_id = '" . (int) $event_id . "'");
 
         if (isset($data['image'])) {
             $this->db->query("UPDATE " . DB_PREFIX . "events SET image = '" . $this->db->escape((string) $data['image']) . "' WHERE event_id = '" . (int) $event_id . "'");
@@ -68,7 +68,7 @@ class ModelCatalogEvent extends PT_Model {
     }
 
     public function getEvent($event_id) {
-        $query = $this->db->query("SELECT e.date,e.name,e.description,e.image as event_image,e.sort_order,e.status,ei.* FROM " . DB_PREFIX . "events e LEFT JOIN " . DB_PREFIX . "event_image ei ON (e.event_id = ei.event_id) WHERE e.event_id = '" . (int) $event_id . "'");
+        $query = $this->db->query("SELECT e.date,e.event_url,e.name,e.description,e.image as event_image,e.sort_order as e_order,e.status,ei.* FROM " . DB_PREFIX . "events e LEFT JOIN " . DB_PREFIX . "event_image ei ON (e.event_id = ei.event_id) WHERE e.event_id = '" . (int) $event_id . "'");
 
         return $query->row;
     }

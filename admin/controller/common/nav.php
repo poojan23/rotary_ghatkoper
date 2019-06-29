@@ -169,6 +169,27 @@ class ControllerCommonNav extends PT_Controller
                 );
             }
             
+            # News
+            $news = array();
+            
+            if ($this->user->hasPermission('access', 'news/news')) {
+                $news[] = array(
+                    'name'      => $this->language->get('text_news'),
+                    'href'      => $this->url->link('news/news', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+   
+            if ($news) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_news'),
+                    'href'      => '',
+                    'children'  => $news
+                );
+            }
+            
             # Project
             $project = array();
             

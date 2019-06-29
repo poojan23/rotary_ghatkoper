@@ -35,6 +35,7 @@ $_['entry_language']            = 'Language';
 $_['entry_keyword']             = 'Keyword';
 $_['entry_additional_image']    = 'Image';
 $_['entry_date']                = 'Date';
+$_['entry_url']                 = 'Facebook Url';
 
 # Help
 $_['help_bottom']               = 'Display in the bottom footer.';

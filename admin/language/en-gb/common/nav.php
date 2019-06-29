@@ -80,3 +80,4 @@ $_['text_gml']                  = "Upload GML";
 $_['text_exchange_rate']        = "Exchange Rate";
 $_['text_event']                = "Event";
 $_['text_project']              = "Project";
+$_['text_news']                 = "News";

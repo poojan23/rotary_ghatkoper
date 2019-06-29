@@ -108,7 +108,6 @@ class ControllerCatalogProject extends PT_Controller {
         $data['projects'] = array();
 
         $results = $this->model_catalog_project->getProjects();
-//        print_r($results);exit;
         foreach ($results as $result) {
             $data['projects'][] = array(
                 'project_id' => $result['project_id'],
@@ -231,7 +230,14 @@ class ControllerCatalogProject extends PT_Controller {
         } else {
             $data['project_name'] = '';
         }
-        
+                
+        if (isset($this->request->post['project_url'])) {
+            $data['project_url'] = $this->request->post['project_url'];
+        } elseif (!empty($project_info)) {
+            $data['project_url'] = $project_info['project_url'];
+        } else {
+            $data['project_url'] = '';
+        }
         if (isset($this->request->post['description'])) {
             $data['description'] = $this->request->post['description'];
         } elseif (!empty($project_info)) {
@@ -288,7 +294,7 @@ class ControllerCatalogProject extends PT_Controller {
         if (isset($this->request->post['sort_order'])) {
             $data['sort_order'] = $this->request->post['sort_order'];
         } elseif (!empty($project_info)) {
-            $data['sort_order'] = $project_info['sort_order'];
+            $data['sort_order'] = $project_info['e_order'];
         } else {
             $data['sort_order'] = 0;
         }
@@ -363,8 +369,6 @@ class ControllerCatalogProject extends PT_Controller {
         }
 
         array_multisort($sort_order, SORT_ASC, $json);
-
-        //print_r($json);
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));

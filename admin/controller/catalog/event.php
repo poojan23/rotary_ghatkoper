@@ -240,7 +240,15 @@ class ControllerCatalogEvent extends PT_Controller {
         } else {
             $data['description'] = '';
         }
-
+        
+        if (isset($this->request->post['event_url'])) {
+            $data['event_url'] = $this->request->post['event_url'];
+        } elseif (!empty($event_info)) {
+            $data['event_url'] = $event_info['event_url'];
+        } else {
+            $data['event_url'] = '';
+        }
+        
         if (isset($this->request->post['image'])) {
             $data['image'] = $this->request->post['image'];
         } elseif (!empty($event_info)) {
@@ -289,7 +297,7 @@ class ControllerCatalogEvent extends PT_Controller {
         if (isset($this->request->post['sort_order'])) {
             $data['sort_order'] = $this->request->post['sort_order'];
         } elseif (!empty($event_info)) {
-            $data['sort_order'] = $event_info['sort_order'];
+            $data['sort_order'] = $event_info['e_order'];
         } else {
             $data['sort_order'] = 0;
         }

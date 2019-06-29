@@ -75,18 +75,32 @@
                           id="form-team" class="form-horizontal">
                         <div class="card-body">
                             <fieldset>
+                                <div class="form-group row required">
+                                    <label for="input-date" class="col-sm-2 col-form-label">
+                                        <?php echo $entry_date; ?></label>
+
+                                    <div class="col-sm-10">
+                                        <?php $curr_date = date("Y-m-d");?>
+                                        <?php if ($date): ?>
+                                        <input type="date" name="date" value="<?php echo $date; ?>" class="form-control" id="input-date" />
+                                        <?php else : ?>
+                                        <input type="date" name="date" value="<?php echo $curr_date; ?>" class="form-control" id="input-date" />
+                                        <?php endif; ?>
+
+                                    </div>
+                                </div>
                                 <div class="form-group row <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
                                     <label for="input-name" class="col-sm-2 col-form-label"><?php echo $entry_name; ?> <span class="text-red">*</span></label>
 
                                     <div class="col-sm-10">
-                                       
+
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="name" placeholder="<?php echo $entry_name; ?>" value="<?php echo $name; ?>" id="input-name">
                                         </div>
                                         <?php if(isset($name_err)) : ?>
                                         <span class="help-block"><?php echo $name_err; ?></span>
                                         <?php endif; ?>
-                                       
+
                                     </div>
                                 </div>
                                 <hr>
@@ -130,53 +144,53 @@
 <!-- /.content-wrapper -->
 <?php echo $footer; ?>
 <script type="text/javascript">
-    $('#button-upload').on('click', function() {
+    $('#button-upload').on('click', function () {
         $('#form-upload').remove();
-    
+
         $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
-    
+
         $('#form-upload input[name=\'file\']').trigger('click');
-    
+
         if (typeof timer != 'undefined') {
             clearInterval(timer);
         }
-    
-        timer = setInterval(function() {
+
+        timer = setInterval(function () {
             if ($('#form-upload input[name=\'file\']').val() != '') {
                 clearInterval(timer);
-    
+
                 $.ajax({
-                    url: 'index.php?url=catalog/download/upload&user_token=<?php echo $user_token; ?>',
+                    url: 'index.php?url=news/news/upload&user_token=<?php echo $user_token; ?>',
                     type: 'post',
                     dataType: 'json',
                     data: new FormData($('#form-upload')[0]),
                     cache: false,
                     contentType: false,
                     processData: false,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#button-upload').button('loading');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('#button-upload').button('reset');
                     },
-                    success: function(json) {
+                    success: function (json) {
                         console.log(json);
                         if (json['error']) {
                             alert(json['error']);
                         }
-    
+
                         if (json['success']) {
                             alert(json['success']);
-    
+
                             $('input[name=\'filename\']').val(json['filename']);
                             $('input[name=\'mask\']').val(json['mask']);
                         }
                     },
-                    error: function(xhr, ajaxOptions, thrownError) {
+                    error: function (xhr, ajaxOptions, thrownError) {
                         alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
                     }
                 });
             }
         }, 500);
     });
-    </script>
+</script>

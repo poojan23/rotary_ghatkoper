@@ -1,70 +1,70 @@
 <?php
 
-class ControllerCatalogDownload extends PT_Controller {
+class ControllerNewsNews extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('catalog/download');
+        $this->load->language('news/news');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/download');
+        $this->load->model('news/news');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('catalog/download');
+        $this->load->language('news/news');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/download');
+        $this->load->model('news/news');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_download->addDownload($this->request->post);
+            $this->model_news_news->addNews($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('news/news', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('catalog/download');
+        $this->load->language('news/news');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/download');
+        $this->load->model('news/news');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_download->editDownload($this->request->get['download_id'], $this->request->post);
+            $this->model_news_news->editNews($this->request->get['news_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('news/news', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('catalog/download');
+        $this->load->language('news/news');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/download');
+        $this->load->model('news/news');
 
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $download_id) {
-                $this->model_catalog_download->deleteDownload($download_id);
+            foreach ($this->request->post['selected'] as $news_id) {
+                $this->model_news_news->deleteNews($news_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('news/news', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getList();
@@ -99,22 +99,23 @@ class ControllerCatalogDownload extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('news/news', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('catalog/download/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('catalog/download/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('news/news/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('news/news/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['downloads'] = array();
+        $data['newss'] = array();
 
-        $results = $this->model_catalog_download->getDownloads();
+        $results = $this->model_news_news->getNewss();
 
         foreach ($results as $result) {
-            $data['downloads'][] = array(
-                'download_id' => $result['download_id'],
+            $data['newss'][] = array(
+                'news_id' => $result['news_id'],
                 'name' => $result['name'],
                 'filename' => $result['filename'],
-                'edit' => $this->url->link('catalog/download/edit', 'user_token=' . $this->session->data['user_token'] . '&download_id=' . $result['download_id'])
+                'mask' => $result['mask'],
+                'edit' => $this->url->link('news/news/edit', 'user_token=' . $this->session->data['user_token'] . '&news_id=' . $result['news_id'])
             );
         }
 
@@ -150,7 +151,7 @@ class ControllerCatalogDownload extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/download_list', $data));
+        $this->response->setOutput($this->load->view('news/news_list', $data));
     }
 
     protected function getForm() {
@@ -159,7 +160,7 @@ class ControllerCatalogDownload extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
         $data['user_token'] = $this->session->data['user_token'];
-        $data['text_form'] = !isset($this->request->get['download_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['news_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -194,49 +195,57 @@ class ControllerCatalogDownload extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('news/news', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['download_id'])) {
-            $data['action'] = $this->url->link('catalog/download/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['news_id'])) {
+            $data['action'] = $this->url->link('news/news/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('catalog/download/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('news/news/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('catalog/download/edit', 'user_token=' . $this->session->data['user_token'] . '&download_id=' . $this->request->get['download_id']);
+            $data['action'] = $this->url->link('news/news/edit', 'user_token=' . $this->session->data['user_token'] . '&news_id=' . $this->request->get['news_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('catalog/download/edit', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('news/news/edit', 'user_token=' . $this->session->data['user_token'])
             );
         }
 
-        $data['cancel'] = $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('news/news', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['download_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $download_info = $this->model_catalog_download->getDownload($this->request->get['download_id']);
+        if (isset($this->request->get['news_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $news_info = $this->model_news_news->getNews($this->request->get['news_id']);
         }
 
         if (isset($this->request->post['filename'])) {
             $data['filename'] = $this->request->post['filename'];
-        } elseif (!empty($download_info)) {
-            $data['filename'] = $download_info['filename'];
+        } elseif (!empty($news_info)) {
+            $data['filename'] = $news_info['filename'];
         } else {
             $data['filename'] = '';
         }
 
         if (isset($this->request->post['name'])) {
             $data['name'] = $this->request->post['name'];
-        } elseif (!empty($download_info)) {
-            $data['name'] = $download_info['name'];
+        } elseif (!empty($news_info)) {
+            $data['name'] = $news_info['name'];
         } else {
             $data['name'] = '';
         }
 
+        if (isset($this->request->post['date'])) {
+            $data['date'] = $this->request->post['date'];
+        } elseif (!empty($news_info)) {
+            $data['date'] = $news_info['date'];
+        } else {
+            $data['date'] = '';
+        }
+
         if (isset($this->request->post['mask'])) {
             $data['mask'] = $this->request->post['mask'];
-        } elseif (!empty($download_info)) {
-            $data['mask'] = $download_info['mask'];
+        } elseif (!empty($news_info)) {
+            $data['mask'] = $news_info['mask'];
         } else {
             $data['mask'] = '';
         }
@@ -245,15 +254,15 @@ class ControllerCatalogDownload extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/download_form', $data));
+        $this->response->setOutput($this->load->view('news/news_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'catalog/download')) {
+        if (!$this->user->hasPermission('modify', 'news/news')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        foreach ($this->request->post['download_description'] as $language_id => $value) {
+        foreach ($this->request->post['news_description'] as $language_id => $value) {
             if ((utf8_strlen($value['name']) < 3) || (utf8_strlen($value['name']) > 64)) {
                 $this->error['name'][$language_id] = $this->language->get('error_name');
             }
@@ -275,12 +284,12 @@ class ControllerCatalogDownload extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'catalog/download')) {
+        if (!$this->user->hasPermission('delete', 'news/news')) {
             $this->error['warning'] = $this->language->get('error_delete');
         }
 
-        foreach ($this->request->post['selected'] as $download_id) {
-            if ($this->user->getId() == $download_id) {
+        foreach ($this->request->post['selected'] as $news_id) {
+            if ($this->user->getId() == $news_id) {
                 $this->error['warning'] = $this->language->get('error_account');
             }
         }
@@ -289,12 +298,12 @@ class ControllerCatalogDownload extends PT_Controller {
     }
     
     public function testupload() {
-        $this->load->language('catalog/download');
+        $this->load->language('news/news');
         
         $json = array();
         
         // Check user has permission
-        if (!$this->user->hasPermission('modify', 'catalog/download')) {
+        if (!$this->user->hasPermission('modify', 'news/news')) {
             $json['error'] = $this->language->get('error_permission');
         }
         
@@ -317,12 +326,12 @@ class ControllerCatalogDownload extends PT_Controller {
     }
 
     public function upload() {
-        $this->load->language('catalog/download');
+        $this->load->language('news/news');
 
         $json = array();
 
         // Check user has permission
-        if (!$this->user->hasPermission('modify', 'catalog/download')) {
+        if (!$this->user->hasPermission('modify', 'news/news')) {
             $json['error'] = $this->language->get('error_permission');
         }
 

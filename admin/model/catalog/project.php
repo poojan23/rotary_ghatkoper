@@ -3,8 +3,8 @@
 class ModelCatalogProject extends PT_Model {
 
     public function addProject($data) {
-
-        $this->db->query("INSERT INTO " . DB_PREFIX . "projects SET  date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['project_name']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
+      
+        $this->db->query("INSERT INTO " . DB_PREFIX . "projects SET  date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['project_name']) . "',project_url = '" . $this->db->escape((string) $data['project_url']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
 
         $project_id = $this->db->lastInsertId();
 
@@ -33,7 +33,7 @@ class ModelCatalogProject extends PT_Model {
     }
 
     public function editProject($project_id, $data) {
-        $this->db->query("UPDATE " . DB_PREFIX . "projects SET date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['project_name']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW() WHERE project_id = '" . (int) $project_id . "'");
+        $this->db->query("UPDATE " . DB_PREFIX . "projects SET date = '" . $this->db->escape((string) $data['date']) . "',name = '" . $this->db->escape((string) $data['project_name']) . "',project_url = '" . $this->db->escape((string) $data['project_url']) . "',description = '" . $this->db->escape((string) $data['description']) . "',sort_order = '" . (int) $data['sort_order'] . "', status = '" . (isset($data['status']) ? (int) $data['status'] : 0) . "', date_modified = NOW() WHERE project_id = '" . (int) $project_id . "'");
 
         if (isset($data['image'])) {
             $this->db->query("UPDATE " . DB_PREFIX . "projects SET image = '" . $this->db->escape((string) $data['image']) . "' WHERE project_id = '" . (int) $project_id . "'");
@@ -69,7 +69,7 @@ class ModelCatalogProject extends PT_Model {
     }
 
     public function getProject($project_id) {
-        $query = $this->db->query("SELECT e.date,e.name,e.description,e.image as project_image,e.sort_order,e.status,ei.* FROM " . DB_PREFIX . "projects e LEFT JOIN " . DB_PREFIX . "project_image ei ON (e.project_id = ei.project_id) WHERE e.project_id = '" . (int) $project_id . "'");
+        $query = $this->db->query("SELECT e.date,e.name,e.project_url,e.description,e.sort_order as e_order,e.status,e.image as project_image,ei.* FROM " . DB_PREFIX . "projects e LEFT JOIN " . DB_PREFIX . "project_image ei ON (e.project_id = ei.project_id) WHERE e.project_id = '" . (int) $project_id . "'");
 
         return $query->row;
     }
