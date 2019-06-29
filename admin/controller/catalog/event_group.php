@@ -1,70 +1,70 @@
 <?php
 
-class ControllerCatalogProject extends PT_Controller {
+class ControllerCatalogEventGroup extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event_group');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event_group');
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
-            $this->model_catalog_project->addProject($this->request->post);
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+            $this->model_catalog_event_group->addEventGroup($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event_group');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_project->editProject($this->request->get['project_id'], $this->request->post);
+            $this->model_catalog_event_group->editEventGroup($this->request->get['event_group_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
-
+        $this->load->model('catalog/event_group');
+       
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $project_id) {
-                $this->model_catalog_project->deleteProject($project_id);
+            foreach ($this->request->post['selected'] as $event_group_id) {
+                $this->model_catalog_event_group->deleteEventGroup($event_group_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getList();
@@ -99,22 +99,23 @@ class ControllerCatalogProject extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('catalog/project/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('catalog/project/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('catalog/event_group/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('catalog/event_group/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['projects'] = array();
+        $data['event_groups'] = array();
 
-        $results = $this->model_catalog_project->getProjects();
+        $results = $this->model_catalog_event_group->getEventGroups();
+
         foreach ($results as $result) {
-            $data['projects'][] = array(
-                'project_id' => $result['project_id'],
+            $data['event_groups'][] = array(
+                'event_group_id' => $result['event_group_id'],
                 'name' => $result['name'],
                 'sort_order' => $result['sort_order'],
-                'edit' => $this->url->link('catalog/project/edit', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $result['project_id']),
-                'delete' => $this->url->link('catalog/project/delete', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $result['project_id'])
+                'edit' => $this->url->link('catalog/event_group/edit', 'user_token=' . $this->session->data['user_token'] . '&event_group_id=' . $result['event_group_id']),
+                'delete' => $this->url->link('catalog/event_group/delete', 'user_token=' . $this->session->data['user_token'] . '&event_group_id=' . $result['event_group_id'])
             );
         }
 
@@ -142,7 +143,7 @@ class ControllerCatalogProject extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/project_list', $data));
+        $this->response->setOutput($this->load->view('catalog/event_group_list', $data));
     }
 
     protected function getForm() {
@@ -151,7 +152,7 @@ class ControllerCatalogProject extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
 
-        $data['text_form'] = !isset($this->request->get['project_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['event_group_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -159,22 +160,16 @@ class ControllerCatalogProject extends PT_Controller {
             $data['warning_err'] = '';
         }
 
-        if (isset($this->error['project_name'])) {
-            $data['name_err'] = $this->error['project_name'];
+        if (isset($this->error['name'])) {
+            $data['name_err'] = $this->error['name'];
         } else {
             $data['name_err'] = array();
         }
 
-        if (isset($this->error['description'])) {
-            $data['description_err'] = $this->error['description'];
+        if (isset($this->error['url'])) {
+            $data['url_err'] = $this->error['url'];
         } else {
-            $data['description_err'] = array();
-        }
-        
-        if (isset($this->error['keyword'])) {
-            $data['keyword_err'] = $this->error['keyword'];
-        } else {
-            $data['keyword_err'] = '';
+            $data['url_err'] = array();
         }
 
         $data['breadcrumbs'] = array();
@@ -186,145 +181,90 @@ class ControllerCatalogProject extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['project_id'])) {
-            $data['action'] = $this->url->link('catalog/project/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['event_group_id'])) {
+            $data['action'] = $this->url->link('catalog/event_group/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('catalog/project/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('catalog/event_group/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('catalog/project/edit', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $this->request->get['project_id']);
+            $data['action'] = $this->url->link('catalog/event_group/edit', 'user_token=' . $this->session->data['user_token'] . '&event_group_id=' . $this->request->get['event_group_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('catalog/project/edit', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $this->request->get['project_id'])
+                'href' => $this->url->link('catalog/event_group/edit', 'user_token=' . $this->session->data['user_token'] . '&event_group_id=' . $this->request->get['event_group_id'])
             );
         }
 
-        $data['cancel'] = $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['project_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $project_info = $this->model_catalog_project->getProject($this->request->get['project_id']);
+        if (isset($this->request->get['event_group_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $event_group_info = $this->model_catalog_event_group->getEventGroup($this->request->get['event_group_id']);
         }
-        
+      
         $data['user_token'] = $this->session->data['user_token'];
 
         $this->load->model('localisation/language');
 
-        $data['languages'] = $this->model_localisation_language->getLanguages();
-       
-        if (isset($this->request->post['date'])) {
-            $data['date'] = $this->request->post['date'];
-        } elseif (!empty($project_info)) {
-            $data['date'] = $project_info['date'];
+        if (isset($this->request->post['name'])) {
+            $data['name'] = $this->request->post['name'];
+        } elseif (!empty($event_group_info)) {
+            $data['name'] = $event_group_info['name'];
         } else {
-            $data['date'] = '';
-        }
-        
-        if (isset($this->request->post['project_name'])) {
-            $data['project_name'] = $this->request->post['project_name'];
-        } elseif (!empty($project_info)) {
-            $data['project_name'] = $project_info['name'];
-        } else {
-            $data['project_name'] = '';
-        }
-                
-        if (isset($this->request->post['project_url'])) {
-            $data['project_url'] = $this->request->post['project_url'];
-        } elseif (!empty($project_info)) {
-            $data['project_url'] = $project_info['project_url'];
-        } else {
-            $data['project_url'] = '';
-        }
-        if (isset($this->request->post['description'])) {
-            $data['description'] = $this->request->post['description'];
-        } elseif (!empty($project_info)) {
-            $data['description'] = $project_info['description'];
-        } else {
-            $data['description'] = '';
+            $data['name'] = '';
         }
 
-        if (isset($this->request->post['image'])) {
-            $data['image'] = $this->request->post['image'];
-        } elseif (!empty($project_info)) {
-            $data['image'] = $project_info['project_image'];
+        if (isset($this->request->post['event_id'])) {
+            $data['event_id'] = $this->request->post['event_id'];
+        } elseif (!empty($event_group_info)) {
+            $data['event_id'] = $event_group_info['event_id'];
         } else {
-            $data['image'] = '';
-        }
-       
-        $this->load->model('tool/image');
-
-        $data['placeholder'] = $this->model_tool_image->resize('no-image.png', 100, 100);
-
-        if (is_file(DIR_IMAGE . html_entity_decode($data['image'], ENT_QUOTES, 'UTF-8'))) {
-            $data['thumb'] = $this->model_tool_image->resize(html_entity_decode($data['image'], ENT_QUOTES, 'UTF-8'), 100, 100);
-        } else {
-            $data['thumb'] = $data['placeholder'];
-        }
-        
-        // Images
-        if (isset($this->request->post['project_image'])) {
-            $project_images = $this->request->post['project_image'];
-        } elseif (!empty($project_info)) {
-            $project_images = $this->model_catalog_project->getProjectImages($this->request->get['project_id']);
-        } else {
-            $project_images = array();
-        }
-
-        $data['project_images'] = array();
-
-        foreach ($project_images as $project_image) {
-            if (is_file(DIR_IMAGE . html_entity_decode($project_image['image'], ENT_QUOTES, 'UTF-8'))) {
-                $image = $project_image['image'];
-                $thumb = $project_image['image'];
-            } else {
-                $image = '';
-                $thumb = 'no_image.png';
-            }
-
-            $data['project_images'][] = array(
-                'image' => $image,
-                'thumb' => $this->model_tool_image->resize(html_entity_decode($thumb, ENT_QUOTES, 'UTF-8'), 100, 100),
-                'sort_order' => $project_image['sort_order']
-            );
+            $data['event_id'] = '';
         }
 
         if (isset($this->request->post['sort_order'])) {
             $data['sort_order'] = $this->request->post['sort_order'];
-        } elseif (!empty($project_info)) {
-            $data['sort_order'] = $project_info['e_order'];
+        } elseif (!empty($event_group_info)) {
+            $data['sort_order'] = $event_group_info['sort_order'];
         } else {
             $data['sort_order'] = 0;
+        }
+         if (isset($this->request->get['event_group_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $event_seo = $this->model_catalog_event_group->getEventGroupSeoUrls($this->request->get['event_group_id']);
+        }
+       
+        if (isset($this->request->post['event_seo_url'])) {
+            $data['event_seo_url'] = $this->request->post['event_seo_url'];
+        } elseif (!empty($event_seo)) {
+            $data['event_seo'] = $event_seo['keyword'];
+        } else {
+            $data['event_seo'] = '';
         }
 
         if (isset($this->request->post['status'])) {
             $data['status'] = $this->request->post['status'];
-        } elseif (!empty($project_info)) {
-            $data['status'] = $project_info['status'];
+        } elseif (!empty($event_group_info)) {
+            $data['status'] = $event_group_info['status'];
         } else {
             $data['status'] = true;
-        }
-
-        if (isset($this->request->post['project_seo_url'])) {
-            $data['project_seo_url'] = $this->request->post['project_seo_url'];
-        } elseif (!empty($project_info)) {
-            $data['project_seo_url'] = $this->model_catalog_project->getProjectSeoUrls($this->request->get['project_id']);
-        } else {
-            $data['project_seo_url'] = array();
         }
 
         $data['header'] = $this->load->controller('common/header');
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/project_form', $data));
+        $this->response->setOutput($this->load->view('catalog/event_group_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'catalog/project')) {
+        if (!$this->user->hasPermission('modify', 'catalog/event_group')) {
             $this->error['warning'] = $this->language->get('error_permission');
+        }
+        
+        if ((utf8_strlen(trim($this->request->post['name'])) < 1) || (utf8_strlen(trim($this->request->post['name'])) > 32)) {
+            $this->error['name'] = $this->language->get('error_name');
         }
 
         if ($this->error && !isset($this->error['warning'])) {
@@ -335,7 +275,7 @@ class ControllerCatalogProject extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'catalog/project')) {
+        if (!$this->user->hasPermission('delete', 'catalog/event_group')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -370,6 +310,8 @@ class ControllerCatalogProject extends PT_Controller {
 
         array_multisort($sort_order, SORT_ASC, $json);
 
+        //print_r($json);
+
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
@@ -378,13 +320,21 @@ class ControllerCatalogProject extends PT_Controller {
         $json = array();
 
         if (isset($this->request->get['filter_name'])) {
-            $this->load->model('catalog/project');
+            $this->load->model('catalog/event_group');
 
-            $results = $this->model_catalog_project->getProjects();
-          
+            $filter_data = array(
+                'filter_name' => $this->request->get['filter_name'],
+                'sort' => 'name',
+                'order' => 'ASC',
+                'start' => 0,
+                'limit' => 5
+            );
+
+            $results = $this->model_catalog_event_group->getEvents($filter_data);
+
             foreach ($results as $result) {
                 $json[] = array(
-                    'project_id' => $result['project_id'],
+                    'event_group_id' => $result['event_group_id'],
                     'title' => strip_tags(html_entity_decode($result['title'], ENT_QUOTES, 'UTF-8'))
                 );
             }

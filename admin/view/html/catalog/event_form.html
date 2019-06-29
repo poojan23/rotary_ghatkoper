@@ -94,11 +94,11 @@
                                                         <?php echo $entry_date; ?></label>
 
                                                     <div class="col-sm-10">
-                                                        <?php $curr_date = date("Y-m");?>
+                                                        <?php $curr_date = date("Y-m-d");?>
                                                         <?php if ($date): ?>
-                                                        <input type="month" name="date" value="<?php echo $date; ?>" class="form-control" id="input-date" />
+                                                        <input type="date" name="date" value="<?php echo $date; ?>" class="form-control" id="input-date" />
                                                         <?php else : ?>
-                                                        <input type="month" name="date" value="<?php echo $curr_date; ?>" class="form-control" id="input-date" />
+                                                        <input type="date" name="date" value="<?php echo $curr_date; ?>" class="form-control" id="input-date" />
                                                         <?php endif; ?>
                                                         
                                                     </div>
@@ -109,8 +109,8 @@
 
                                                 <div class="col-sm-10">
                                                     <input type="text"
-                                                           name="project_name"
-                                                           value="<?php echo $project_name;?>"
+                                                           name="event_name"
+                                                           value="<?php echo $event_name;?>"
                                                            placeholder="<?php echo $entry_name; ?>" class="form-control"
                                                            id="input-name" />
                                                 </div>
@@ -140,8 +140,8 @@
 
                                                 <div class="col-sm-10">
                                                     <input type="text"
-                                                           name="project_url"
-                                                           value="<?php echo $project_url;?>"
+                                                           name="event_url"
+                                                           value="<?php echo $event_url;?>"
                                                            placeholder="<?php echo $entry_url; ?>" class="form-control"
                                                            id="input-name" />
                                                 </div>
@@ -206,15 +206,15 @@
                                             </thead>
                                             <tbody>
                                                 <?php $image_row = 0; ?>
-                                                <?php foreach($project_images as $project_image) : ?>
+                                                <?php foreach($event_images as $event_image) : ?>
                                                 <tr id="image-row<?php echo $image_row; ?>">
                                                     <td>
                                                         <div class="card image">
-                                                          <img src="<?php echo $project_image['thumb']; ?>" alt="" title="" id="thumb-image<?php echo $image_row; ?>" data-placeholder="<?php echo $placeholder; ?>" class="card-img-top"/> <input type="hidden" name="project_image[<?php echo $image_row; ?>][image]" value="<?php echo $project_image['image']; ?>" id="input-image<?php echo $image_row; ?>"/>
+                                                          <img src="<?php echo $event_image['thumb']; ?>" alt="" title="" id="thumb-image<?php echo $image_row; ?>" data-placeholder="<?php echo $placeholder; ?>" class="card-img-top"/> <input type="hidden" name="event_image[<?php echo $image_row; ?>][image]" value="<?php echo $event_image['image']; ?>" id="input-image<?php echo $image_row; ?>"/>
                                                         </div>
                                                       </td>
                                                     <td class="text-left">
-                                                        <input type="text" name="project_image[<?php echo $image_row; ?>][sort_order]" value="<?php echo $project_image['sort_order']; ?>" placeholder="<?php echo entry_sort_order; ?>" class="form-control">
+                                                        <input type="text" name="event_image[<?php echo $image_row; ?>][sort_order]" value="<?php echo $event_image['sort_order']; ?>" placeholder="<?php echo entry_sort_order; ?>" class="form-control">
                                                     </td>
                                                     <td class="text-left">
                                                         <button type="button" onclick="$('#image-row<?php echo $image_row; ?>').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
@@ -260,8 +260,8 @@
                                                                 </span>
                                                             </div>
                                                             <input type="text"
-                                                                   name="project_seo_url[<?php echo $language['language_id']; ?>]"
-                                                                   value="<?php if(isset($project_seo_url[$language['language_id']])) : ?><?php echo $project_seo_url[$language['language_id']]; ?><?php endif; ?>"
+                                                                   name="event_seo_url[<?php echo $language['language_id']; ?>]"
+                                                                   value="<?php if(isset($event_seo_url[$language['language_id']])) : ?><?php echo $event_seo_url[$language['language_id']]; ?><?php endif; ?>"
                                                                    placeholder="<?php echo $entry_keyword; ?>"
                                                                    class="form-control" />
                                                         </div>
@@ -300,18 +300,18 @@
     $('input[name=\'path\']').autocomplete({
         'source': function (request, response) {
             $.ajax({
-                url: 'index.php?url=catalog/project/autocomplete&user_token=' + getURLVar('user_token') + '&filter_name=' + encodeURIComponent(request),
+                url: 'index.php?url=catalog/event/autocomplete&user_token=' + getURLVar('user_token') + '&filter_name=' + encodeURIComponent(request),
                 dataType: 'json',
                 success: function (json) {
                     json.unshift({
-                        project_id: 0,
+                        event_id: 0,
                         title: 'None'
                     });
 
                     response($.map(json, function (item) {
                         return {
                             label: item['title'],
-                            value: item['project_id']
+                            value: item['event_id']
                         }
                     }));
                 }
@@ -333,8 +333,8 @@
     function addImage() {
         html = '<tr id="image-row' + image_row + '">';
         html += '<td><div class="card image">';
-        html += '<a href="" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="<?php echo $placeholder; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>"  class="card-img-top"/></a><input type="hidden" name="project_image[' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
-        html += '<td class="text-left"><input type="text" name="project_image[' + image_row + '][sort_order]" value="0" placeholder="<?php echo $sort_order; ?>" class="form-control" /></td>';
+        html += '<a href="" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="<?php echo $placeholder; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>"  class="card-img-top"/></a><input type="hidden" name="event_image[' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
+        html += '<td class="text-left"><input type="text" name="event_image[' + image_row + '][sort_order]" value="0" placeholder="<?php echo $sort_order; ?>" class="form-control" /></td>';
         html += '<td class="text-right"><button type="button" onclick="$(\'#image-row' + image_row + '\').remove();" data-toggle="tooltip" title="<?php echo $button_remove; ?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
         html += '</tr>';
 

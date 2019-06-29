@@ -1,70 +1,71 @@
 <?php
 
-class ControllerCatalogProject extends PT_Controller {
+class ControllerCatalogEvent extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event');
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
-            $this->model_catalog_project->addProject($this->request->post);
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+            
+            $this->model_catalog_event->addEvent($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_project->editProject($this->request->get['project_id'], $this->request->post);
+            $this->model_catalog_event->editEvent($this->request->get['event_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('catalog/project');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/project');
+        $this->load->model('catalog/event');
 
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $project_id) {
-                $this->model_catalog_project->deleteProject($project_id);
+            foreach ($this->request->post['selected'] as $event_id) {
+                $this->model_catalog_event->deleteEvent($event_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getList();
@@ -99,22 +100,23 @@ class ControllerCatalogProject extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('catalog/project/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('catalog/project/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('catalog/event/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['projects'] = array();
+        $data['events'] = array();
 
-        $results = $this->model_catalog_project->getProjects();
+        $results = $this->model_catalog_event->getEvents();
+//        print_r($results);exit;
         foreach ($results as $result) {
-            $data['projects'][] = array(
-                'project_id' => $result['project_id'],
+            $data['events'][] = array(
+                'event_id' => $result['event_id'],
                 'name' => $result['name'],
                 'sort_order' => $result['sort_order'],
-                'edit' => $this->url->link('catalog/project/edit', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $result['project_id']),
-                'delete' => $this->url->link('catalog/project/delete', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $result['project_id'])
+                'edit' => $this->url->link('catalog/event/edit', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id']),
+                'delete' => $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id'])
             );
         }
 
@@ -142,7 +144,7 @@ class ControllerCatalogProject extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/project_list', $data));
+        $this->response->setOutput($this->load->view('catalog/event_list', $data));
     }
 
     protected function getForm() {
@@ -151,7 +153,7 @@ class ControllerCatalogProject extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
 
-        $data['text_form'] = !isset($this->request->get['project_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['event_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -159,8 +161,8 @@ class ControllerCatalogProject extends PT_Controller {
             $data['warning_err'] = '';
         }
 
-        if (isset($this->error['project_name'])) {
-            $data['name_err'] = $this->error['project_name'];
+        if (isset($this->error['event_name'])) {
+            $data['name_err'] = $this->error['event_name'];
         } else {
             $data['name_err'] = array();
         }
@@ -186,29 +188,29 @@ class ControllerCatalogProject extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['project_id'])) {
-            $data['action'] = $this->url->link('catalog/project/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['event_id'])) {
+            $data['action'] = $this->url->link('catalog/event/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('catalog/project/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('catalog/event/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('catalog/project/edit', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $this->request->get['project_id']);
+            $data['action'] = $this->url->link('catalog/event/edit', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $this->request->get['event_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('catalog/project/edit', 'user_token=' . $this->session->data['user_token'] . '&project_id=' . $this->request->get['project_id'])
+                'href' => $this->url->link('catalog/event/edit', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $this->request->get['event_id'])
             );
         }
 
-        $data['cancel'] = $this->url->link('catalog/project', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['project_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $project_info = $this->model_catalog_project->getProject($this->request->get['project_id']);
+        if (isset($this->request->get['event_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $event_info = $this->model_catalog_event->getEvent($this->request->get['event_id']);
         }
-        
+
         $data['user_token'] = $this->session->data['user_token'];
 
         $this->load->model('localisation/language');
@@ -217,39 +219,40 @@ class ControllerCatalogProject extends PT_Controller {
        
         if (isset($this->request->post['date'])) {
             $data['date'] = $this->request->post['date'];
-        } elseif (!empty($project_info)) {
-            $data['date'] = $project_info['date'];
+        } elseif (!empty($event_info)) {
+            $data['date'] = $event_info['date'];
         } else {
             $data['date'] = '';
         }
         
-        if (isset($this->request->post['project_name'])) {
-            $data['project_name'] = $this->request->post['project_name'];
-        } elseif (!empty($project_info)) {
-            $data['project_name'] = $project_info['name'];
+        if (isset($this->request->post['event_name'])) {
+            $data['event_name'] = $this->request->post['event_name'];
+        } elseif (!empty($event_info)) {
+            $data['event_name'] = $event_info['name'];
         } else {
-            $data['project_name'] = '';
+            $data['event_name'] = '';
         }
-                
-        if (isset($this->request->post['project_url'])) {
-            $data['project_url'] = $this->request->post['project_url'];
-        } elseif (!empty($project_info)) {
-            $data['project_url'] = $project_info['project_url'];
-        } else {
-            $data['project_url'] = '';
-        }
+        
         if (isset($this->request->post['description'])) {
             $data['description'] = $this->request->post['description'];
-        } elseif (!empty($project_info)) {
-            $data['description'] = $project_info['description'];
+        } elseif (!empty($event_info)) {
+            $data['description'] = $event_info['description'];
         } else {
             $data['description'] = '';
         }
-
+        
+        if (isset($this->request->post['event_url'])) {
+            $data['event_url'] = $this->request->post['event_url'];
+        } elseif (!empty($event_info)) {
+            $data['event_url'] = $event_info['event_url'];
+        } else {
+            $data['event_url'] = '';
+        }
+        
         if (isset($this->request->post['image'])) {
             $data['image'] = $this->request->post['image'];
-        } elseif (!empty($project_info)) {
-            $data['image'] = $project_info['project_image'];
+        } elseif (!empty($event_info)) {
+            $data['image'] = $event_info['event_image'];
         } else {
             $data['image'] = '';
         }
@@ -265,65 +268,65 @@ class ControllerCatalogProject extends PT_Controller {
         }
         
         // Images
-        if (isset($this->request->post['project_image'])) {
-            $project_images = $this->request->post['project_image'];
-        } elseif (!empty($project_info)) {
-            $project_images = $this->model_catalog_project->getProjectImages($this->request->get['project_id']);
+        if (isset($this->request->post['event_image'])) {
+            $event_images = $this->request->post['event_image'];
+        } elseif (!empty($event_info)) {
+            $event_images = $this->model_catalog_event->getEventImages($this->request->get['event_id']);
         } else {
-            $project_images = array();
+            $event_images = array();
         }
 
-        $data['project_images'] = array();
+        $data['event_images'] = array();
 
-        foreach ($project_images as $project_image) {
-            if (is_file(DIR_IMAGE . html_entity_decode($project_image['image'], ENT_QUOTES, 'UTF-8'))) {
-                $image = $project_image['image'];
-                $thumb = $project_image['image'];
+        foreach ($event_images as $event_image) {
+            if (is_file(DIR_IMAGE . html_entity_decode($event_image['image'], ENT_QUOTES, 'UTF-8'))) {
+                $image = $event_image['image'];
+                $thumb = $event_image['image'];
             } else {
                 $image = '';
                 $thumb = 'no_image.png';
             }
 
-            $data['project_images'][] = array(
+            $data['event_images'][] = array(
                 'image' => $image,
                 'thumb' => $this->model_tool_image->resize(html_entity_decode($thumb, ENT_QUOTES, 'UTF-8'), 100, 100),
-                'sort_order' => $project_image['sort_order']
+                'sort_order' => $event_image['sort_order']
             );
         }
 
         if (isset($this->request->post['sort_order'])) {
             $data['sort_order'] = $this->request->post['sort_order'];
-        } elseif (!empty($project_info)) {
-            $data['sort_order'] = $project_info['e_order'];
+        } elseif (!empty($event_info)) {
+            $data['sort_order'] = $event_info['e_order'];
         } else {
             $data['sort_order'] = 0;
         }
 
         if (isset($this->request->post['status'])) {
             $data['status'] = $this->request->post['status'];
-        } elseif (!empty($project_info)) {
-            $data['status'] = $project_info['status'];
+        } elseif (!empty($event_info)) {
+            $data['status'] = $event_info['status'];
         } else {
             $data['status'] = true;
         }
 
-        if (isset($this->request->post['project_seo_url'])) {
-            $data['project_seo_url'] = $this->request->post['project_seo_url'];
-        } elseif (!empty($project_info)) {
-            $data['project_seo_url'] = $this->model_catalog_project->getProjectSeoUrls($this->request->get['project_id']);
+        if (isset($this->request->post['event_seo_url'])) {
+            $data['event_seo_url'] = $this->request->post['event_seo_url'];
+        } elseif (!empty($event_info)) {
+            $data['event_seo_url'] = $this->model_catalog_event->getEventSeoUrls($this->request->get['event_id']);
         } else {
-            $data['project_seo_url'] = array();
+            $data['event_seo_url'] = array();
         }
 
         $data['header'] = $this->load->controller('common/header');
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/project_form', $data));
+        $this->response->setOutput($this->load->view('catalog/event_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'catalog/project')) {
+        if (!$this->user->hasPermission('modify', 'catalog/event')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -335,7 +338,7 @@ class ControllerCatalogProject extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'catalog/project')) {
+        if (!$this->user->hasPermission('delete', 'catalog/event')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -370,6 +373,8 @@ class ControllerCatalogProject extends PT_Controller {
 
         array_multisort($sort_order, SORT_ASC, $json);
 
+        //print_r($json);
+
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
     }
@@ -378,13 +383,13 @@ class ControllerCatalogProject extends PT_Controller {
         $json = array();
 
         if (isset($this->request->get['filter_name'])) {
-            $this->load->model('catalog/project');
+            $this->load->model('catalog/event');
 
-            $results = $this->model_catalog_project->getProjects();
+            $results = $this->model_catalog_event->getEvents();
           
             foreach ($results as $result) {
                 $json[] = array(
-                    'project_id' => $result['project_id'],
+                    'event_id' => $result['event_id'],
                     'title' => strip_tags(html_entity_decode($result['title'], ENT_QUOTES, 'UTF-8'))
                 );
             }

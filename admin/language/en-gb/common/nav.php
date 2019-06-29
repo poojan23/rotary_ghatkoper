@@ -78,3 +78,6 @@ $_['text_austin_governor']      = "Assit Governor";
 $_['text_category']             = "Category";
 $_['text_gml']                  = "Upload GML";
 $_['text_exchange_rate']        = "Exchange Rate";
+$_['text_event']                = "Event";
+$_['text_project']              = "Project";
+$_['text_news']                 = "News";
