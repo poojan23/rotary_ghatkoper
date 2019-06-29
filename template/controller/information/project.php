@@ -82,6 +82,39 @@ class ControllerInformationProject extends PT_Controller
                 'thumb'         => $thumb
             );
         }
+        
+        # Project
+        $this->load->model('catalog/project');
+        
+        $data['projects'] = array();
+
+        $results = $this->model_catalog_project->getProjects();
+        
+        foreach ($results as $result) {
+            $data['projects'][] = array(
+                'project_id' => $result['project_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'project_image' => $result['project_image'],
+                'project_url' => $result['project_url'],
+                'description' => $result['description']
+            );
+        }
+        
+        $data['prv_projects'] = array();
+
+        $results = $this->model_catalog_project->getPrvProjects();
+        
+        foreach ($results as $result) {
+            $data['prv_projects'][] = array(
+                'project_id' => $result['project_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'project_image' => $result['project_image'],
+                'project_url' => $result['project_url'],
+                'description' => $result['description']
+            );
+        }
 
         # Facts
         $this->load->model('tool/online');

@@ -38,48 +38,19 @@ class ControllerInformationDownload extends PT_Controller
             }
         }
 
-        # Team
-        $this->load->model('catalog/team');
+        #Download
+        $this->load->model('catalog/download');
+        $data['downloads'] = array();
 
-        $data['teams'] = array();
-
-        $results = $this->model_catalog_team->getTeams(0, 6);
-
-        foreach ($results as $result) {
-            if ($result['image']) {
-                $thumb = $this->model_tool_image->resize($result['image'], 400, 500);
-            } else {
-                $thumb = $this->model_tool_image->resize('default-image.png', 400, 500);
-            }
-
-            $data['teams'][] = array(
-                'name'          => $result['name'],
-                'designation'   => $result['designation'],
-                'thumb'         => $thumb
-            );
-        }
-
-        # Watch (See Our Work Showcase)
-
-        # Testimonials
-        $this->load->model('catalog/testimonial');
-
-        $data['testimonials'] = array();
-
-        $results = $this->model_catalog_testimonial->getTestimonials(0, 6);
+        $results = $this->model_catalog_download->get_Downloads();
 
         foreach ($results as $result) {
-            if ($result['image']) {
-                $thumb = $this->model_tool_image->resize($result['image'], 150, 150);
-            } else {
-                $thumb = $this->model_tool_image->resize('default-image.png', 150, 150);
-            }
-
-            $data['testimonials'][] = array(
-                'name'          => $result['name'],
-                'description'   => trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))),
-                'designation'   => $result['designation'],
-                'thumb'         => $thumb
+            $data['downloads'][] = array(
+                'download_id' => $result['download_id'],
+                'name' => $result['name'],
+                'filename' => $result['filename'],
+                'mask' => $result['mask'],
+                'href' => $this->url->link('information/download/download', 'download_id=' . $result['download_id'])
             );
         }
 
@@ -112,4 +83,49 @@ class ControllerInformationDownload extends PT_Controller
 
         $this->response->setOutput($this->load->view('information/download', $data));
     }
+    
+        public function download() {
+        $this->load->model('catalog/download');
+
+        if (isset($this->request->get['download_id'])) {
+            $download_id = $this->request->get['download_id'];
+        } else {
+            $download_id = 0;
+        }
+
+        $download_info = $this->model_catalog_download->getDownload($download_id);
+
+        if ($download_info) {
+            $file = DIR_DOWNLOAD . $download_info['filename'];
+            $mask = basename($download_info['mask']);
+
+            if (!headers_sent()) {
+                if (file_exists($file)) {
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename="' . ($mask ? $mask : basename($file)) . '"');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file));
+
+                    if (ob_get_level()) {
+                        ob_end_clean();
+                    }
+
+                    readfile($file, 'rb');
+
+                    //$this->model_catalog_download->updateViewed($download_info['download_id']);
+
+                    exit();
+                } else {
+                    exit("Error: Couldn't find the file $file!");
+                }
+            } else {
+                exit("Error: Headers already sent out!");
+            }
+        } else {
+            $this->response->redirect($this->url->link('product/download', '', true));
+        }
+    }
+
 }

@@ -9,7 +9,7 @@ class ModelCatalogDownload extends PT_Model
     }
 
     public function editDownload($download_id, $data) {
-        $this->db->query("UPDATE " . DB_PREFIX . "download SET filename = '" . $this->db->escape($data['filename']) . "', mask = '" . $this->db->escape($data['mask']) . "', date_modified = NOW() WHERE download_id = '" . (int)$download_id . "'");
+        $this->db->query("UPDATE " . DB_PREFIX . "download SET name = '" . $this->db->escape($data['name']) . "',filename = '" . $this->db->escape($data['filename']) . "', mask = '" . $this->db->escape($data['mask']) . "', date_modified = NOW() WHERE download_id = '" . (int)$download_id . "'");
 
     }
 

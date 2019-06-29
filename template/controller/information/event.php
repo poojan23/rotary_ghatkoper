@@ -82,6 +82,39 @@ class ControllerInformationEvent extends PT_Controller
                 'thumb'         => $thumb
             );
         }
+        
+        # Event
+        $this->load->model('catalog/event');
+        
+        $data['events'] = array();
+
+        $results = $this->model_catalog_event->get_Events();
+
+        foreach ($results as $result) {
+            $data['events'][] = array(
+                'event_id' => $result['event_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'event_url' => $result['event_url'],
+                'date' => $result['date'],
+                'delete' => $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id'])
+            );
+        }
+        
+        $data['prv_events'] = array();
+
+        $results = $this->model_catalog_event->getPrvEvents();
+
+        foreach ($results as $result) {
+            $data['prv_events'][] = array(
+                'event_id' => $result['event_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'event_url' => $result['event_url'],
+                'date' => $result['date'],
+                'delete' => $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id'])
+            );
+        }
 
         # Facts
         $this->load->model('tool/online');

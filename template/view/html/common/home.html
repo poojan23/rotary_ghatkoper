@@ -1,213 +1,125 @@
 <?php echo $header; ?>
 <?php echo $nav; ?>
-<div class="slider">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="fullscreen-carousel owl-carousel owl-theme owl-center owl-loaded owl-text-select-on">
-                    <?php if($sliders) : ?>
-                        <?php foreach($sliders as $slider) : ?>
-                            <div class="item"><img src="image/<?php echo $slider['image']; ?>"  alt="<?php echo $slider['title']; ?>"></div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
+<div class="event">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="fullscreen-carousel owl-carousel owl-theme owl-center owl-loaded owl-text-select-on">
+                <?php if($sliders) : ?>
+                <?php foreach($sliders as $slider) : ?>
+                <div class="item"><img src="image/<?php echo $slider['image']; ?>"  alt="<?php echo $slider['title']; ?>"></div>
+                <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-    <div class="project">
-        <div class="container">
-            <h3 class="heading">Our Projects</h3>
-            <div class="horizontal-break"></div>
-            <div class="project-detail">
-                <div class="project-carousel owl-carousel owl-theme owl-center owl-loaded owl-text-select-on">
-                    <!-- Item 01 -->
-                    <div class="item">
-                        <div class="project-box">
-                            <div class="project-box-header">
-                                <img src="template/view/dist/images/bicycles 4.jpg" alt="Apple Cinema 30" />
-                            </div>
-                            <div class="project-box-body">
-                                <h4 class="project-box-title">Operation Restore Program Project Highlights</h4>
-                                <p class="project-box-description">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                    exercitatipn...<a href="" class="project-box-button">Read More</a>
-                                </p>
-                            </div>
-                            <div class="project-box-footer">
-                                <a href="" class="project-box-button">Read More</a>
-                            </div>
+</div>
+<div class="project">
+    <div class="container">
+        <h3 class="heading">Our Projects</h3>
+        <div class="horizontal-break"></div>
+        <div class="project-detail">
+            <div class="project-carousel owl-carousel owl-theme owl-center owl-loaded owl-text-select-on">
+                <!-- Item 01 -->
+                <?php foreach($projects as $project) : ?>
+                <div class="item">
+                    <div class="project-box">
+                        <div class="project-box-header">
+                            <img src="image/<?php echo $project['project_image']; ?>" alt="Apple Cinema 30" />
                         </div>
-                    </div>
-
-                    <!-- Item 02 -->
-                    <div class="item">
-                        <div class="project-box">
-                            <div class="project-box-header">
-                                <img src="template/view/dist/images/bicycles 4.jpg" alt="Apple Cinema 30" />
-                            </div>
-                            <div class="project-box-body">
-                                <h4 class="project-box-title">Operation Restore Program Project Highlights</h4>
-                                <p class="project-box-description">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                    exercitatipn...<a href="" class="project-box-button">Read More</a>
-                                </p>
-                            </div>
-                            <div class="project-box-footer">
-                                <a href="" class="project-box-button">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 03 -->
-                    <div class="item">
-                        <div class="project-box">
-                            <div class="project-box-header">
-                                <img src="template/view/dist/images/bicycles 4.jpg" alt="Apple Cinema 30" />
-                            </div>
-                            <div class="project-box-body">
-                                <h4 class="project-box-title">Operation Restore Program Project Highlights</h4>
-                                <p class="project-box-description">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                    exercitatipn...<a href="" class="project-box-button">Read More</a>
-                                </p>
-                            </div>
-                            <div class="project-box-footer">
-                                <a href="" class="project-box-button">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 04 -->
-                    <div class="item">
-                        <div class="project-box">
-                            <div class="project-box-header">
-                                <img src="template/view/dist/images/bicycles 4.jpg" alt="Apple Cinema 30" />
-                            </div>
-                            <div class="project-box-body">
-                                <h4 class="project-box-title">Operation Restore Program Project Highlights</h4>
-                                <p class="project-box-description">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                    exercitatipn...<a href="" class="project-box-button">Read More</a>
-                                </p>
-                            </div>
-                            <div class="project-box-footer">
-                                <a href="" class="project-box-button">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 05 -->
-                    <div class="item">
-                        <div class="project-box">
-                            <div class="project-box-header">
-                                <img src="template/view/dist/images/bicycles 4.jpg" alt="Apple Cinema 30" />
-                            </div>
-                            <div class="project-box-body">
-                                <h4 class="project-box-title">Operation Restore Program Project Highlights</h4>
-                                <p class="project-box-description">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                    exercitatipn...<a href="" class="project-box-button">Read More</a>
-                                </p>
-                            </div>
-                            <div class="project-box-footer">
-                                <a href="" class="project-box-button">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 06 -->
-                    <div class="item">
-                        <div class="project-box">
-                            <div class="project-box-header">
-                                <img src="template/view/dist/images/bicycles 4.jpg" alt="Apple Cinema 30" />
-                            </div>
-                            <div class="project-box-body">
-                                <h4 class="project-box-title">Operation Restore Program Project Highlights</h4>
-                                <p class="project-box-description">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna
-                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                    exercitatipn...<a href="" class="project-box-button">Read More</a>
-                                </p>
-                            </div>
-                            <div class="project-box-footer">
-                                <a href="" class="project-box-button">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="about-section">
-                        <h3 class="heading">About Us</h3>
-                        <div class="horizontal-break"></div>
-                        <div class="about-detail">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                exercitatipn Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                eiusmod
-                                tempor
-                                incididunt ut labore et dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
-                                exercitatipn...<a href="" class="project-box-button">Read More</a>
+                        <div class="project-box-body">
+                            <h4 class="project-box-title"><?php echo $project['name']; ?></h4>
+                            <p class="project-box-description"><?php echo $project['description']; ?>
+                                <!--<a href="" class="project-box-button">Read More</a>-->
                             </p>
                         </div>
+                        <div class="project-box-footer">
+                            <a href="" class="project-box-button">Read More</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="news-section">
-                        <h3 class="heading">Latest News & Events</h3>
-                        <div class="horizontal-break"></div>
-                        <div class="news-detail">
-                            <div class="col-12 col-md-12 col-lg-12">
-                                <div class="new-box">
+                <?php endforeach; ?>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="about-section">
+                    <h3 class="heading">About Us</h3>
+                    <div class="horizontal-break"></div>
+                    <div class="about-detail">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna
+                            aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
+                            exercitatipn Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                            eiusmod
+                            tempor
+                            incididunt ut labore et dolore magna
+                            aliqua. Ut enim ad minim veniam, quis nostrud exercitatipn exercia
+                            exercitatipn...<a href="" class="project-box-button">Read More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="news-section">
+                    <h3 class="heading">Latest News & Event</h3>
+                    <div class="horizontal-break"></div>
+                    <div class="news-detail">
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="new-box">
+                                <?php foreach($events as $event) : ?>
+                                <?php
+                                $date = $event['date'];
+                                $date = explode('-', $date);
+                                $month   = $date[1];
+                                $day   = $date[2];
+                                $monthNum  = 3;
+                                $dateObj   = DateTime::createFromFormat('!m', $month);
+                                $monthName = $dateObj->format('F'); 
+                                ?>
+                                <div class="media">
+                                    <a class="pull-left" href="javascript:;"><span
+                                            class="dateEl"><em><?php echo $day ; ?></em><?php echo $monthName ; ?></span></a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">
+                                            <a href="javascript:;">Event</a>
+                                        </h4>
+
+                                        <div class="meta-data">
+                                            <span class=""><?php echo $monthName ."-".$day; ?></span> 
+                                            <!--                                                <span class="timeEl">12:00pm
+                                                                                                - 02:00pm</span>-->
+                                        </div>
+
+                                        <p>
+                                            <?php echo $event['name']; ?>
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                                <?php endforeach; ?>
+                                
+                                <div class="blogPost--small">
+                                    <?php foreach($newss as $news) : ?>
                                     <div class="media">
-                                        <a class="pull-left" href="javascript:;"><span
-                                                class="dateEl"><em>30</em>June</span></a>
+                                        <span class="pull-left"><a href="javascript:;"><span class="date"><i
+                                                        class="fa fa-bullhorn"></i></a></span>
                                         <div class="media-body">
                                             <h4 class="media-heading">
-                                                <a href="javascript:;">Events</a>
+                                                <a href="javascript:;">News</a>
                                             </h4>
-                                            <div class="meta-data">
-                                                <span class="longDate">June 30, 2019</span> <span class="timeEl">12:00pm
-                                                    - 02:00pm</span>
-                                            </div>
                                             <p>
-                                                See the latest inspirations in the local tech scene.
+                                                 <?php echo $news['name']; ?>.
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="blogPost--small">
-                                        <div class="media">
-                                            <span class="pull-left"><a href="javascript:;"><span class="date"><i
-                                                            class="fa fa-bullhorn"></i></a></span>
-                                            <div class="media-body">
-                                                <h4 class="media-heading">
-                                                    <a href="javascript:;">News</a>
-                                                </h4>
-                                                <p>
-                                                    Learn about all of the possibilities of web design in our latest CMS
-                                                    release.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                     <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
@@ -216,45 +128,46 @@
             </div>
         </div>
     </div>
-    <div class="image">
-        <div class="image-layer">
-            <div class="container">
-                <div class="row">
+</div>
+<div class="image">
+    <div class="image-layer">
+        <div class="container">
+            <div class="row">
 
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contact">
+    <div class="container">
+        <h3 class="heading">Contact Us</h3>
+        <div class="horizontal-break"></div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contact-map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15085.59499977969!2d72.898!3d19.046198!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xeed3af89af3e02f1!2sThe+Bombay+Presidency+Golf+Club!5e0!3m2!1sen!2sus!4v1560750971142!5m2!1sen!2sus"
+                        width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-info">
+                    <address>
+                        <p><strong>President Rtn.</strong> Parul Hitesh Shah</p>
+                        <p><strong>Contact number</strong> : <a href="tel:<?php echo $telephone; ?>"><?php echo $telephone; ?></a></p>
+                        <p><strong>Address</strong> : <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+                        </p>
+                        <p><strong>Correspondence Address</strong> : <?php echo $address; ?></p>
+                        <p><strong>Registered Address</strong> : <?php echo $address; ?></p>
+
+                        <p><a href="javascript:;"><img src="template/view/dist/images/donate-horizontal.png"></a></p>
+                    </address>
                 </div>
             </div>
         </div>
     </div>
-    <div class="contact">
-            <div class="container">
-                <h3 class="heading">Contact Us</h3>
-                <div class="horizontal-break"></div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="contact-map">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15085.59499977969!2d72.898!3d19.046198!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xeed3af89af3e02f1!2sThe+Bombay+Presidency+Golf+Club!5e0!3m2!1sen!2sus!4v1560750971142!5m2!1sen!2sus"
-                                width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="contact-info">
-                            <address>
-                                <p><strong>President Rtn.</strong> Parul Hitesh Shah</p>
-                                <p><strong>Contact number</strong> : <a href="tel:<?php echo $telephone; ?>"><?php echo $telephone; ?></a></p>
-                                <p><strong>Address</strong> : <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
-                                </p>
-                                <p><strong>Correspondence Address</strong> : <?php echo $address; ?></p>
-                                <p><strong>Registered Address</strong> : <?php echo $address; ?></p>
-    
-                                <p><a href="javascript:;"><img src="template/view/dist/images/donate-horizontal.png"></a></p>
-                            </address>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
 
 
 <!-- <div id="page-content-wrapper">
@@ -262,11 +175,11 @@
         <div class="container">
             <div class="header-banner">
                 <div class="fullscreen-carousel owl-carousel owl-theme owl-center owl-loaded owl-text-select-on">
-                    <?php if($sliders) : ?>
-                    <?php foreach($sliders as $slider) : ?>
+                    <?php if($events) : ?>
+                    <?php foreach($events as $event) : ?>
                     <div class="item">
-                        <img src="image/<?php echo $slider['image']; ?>" alt="<?php echo $slider['title']; ?>"
-                            class="images-responsive slider-image-size">
+                        <img src="image/<?php echo $event['image']; ?>" alt="<?php echo $event['title']; ?>"
+                            class="images-responsive event-image-size">
                     </div>
                     <?php endforeach; ?>
                     <?php endif; ?>
@@ -353,5 +266,5 @@
                     </div>
                 </div>
             </div> -->
-         
-            <?php echo $footer; ?>
+
+<?php echo $footer; ?>

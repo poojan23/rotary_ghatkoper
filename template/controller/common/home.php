@@ -33,67 +33,56 @@ class ControllerCommonHome extends PT_Controller
 
         $data['projects'] = $this->model_club_dashboard->getTotalProjectHome(); 
 
-        # Team
-        // $this->load->model('catalog/team');
+        # Project
+        $this->load->model('catalog/project');
+        
+        $data['projects'] = array();
 
-        // $data['teams'] = array();
+        $results = $this->model_catalog_project->getProjects();
+        
+        foreach ($results as $result) {
+            $data['projects'][] = array(
+                'project_id' => $result['project_id'],
+                'name' => $result['name'],
+                'project_image' => $result['project_image'],
+                'project_url' => $result['project_url'],
+                'description' => $result['description']
+            );
+        }
+        
+        # Event
+        $this->load->model('catalog/event');
+        
+        $data['events'] = array();
 
-        // $results = $this->model_catalog_team->getTeams(0, 6);
+        $results = $this->model_catalog_event->getEvents();
 
-        // foreach ($results as $result) {
-        //     if ($result['image']) {
-        //         $thumb = $this->model_tool_image->resize($result['image'], 400, 500);
-        //     } else {
-        //         $thumb = $this->model_tool_image->resize('default-image.png', 400, 500);
-        //     }
+        foreach ($results as $result) {
+            $data['events'][] = array(
+                'event_id' => $result['event_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'event_url' => $result['event_url'],
+                'date' => $result['date'],
+                'delete' => $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id'])
+            );
+        }
+        
+        #News
+        $this->load->model('catalog/news');
+        $data['newss'] = array();
 
-        //     $data['teams'][] = array(
-        //         'name'          => $result['name'],
-        //         'designation'   => $result['designation'],
-        //         'thumb'         => $thumb
-        //     );
-        // }
-
-        # Watch (See Our Work Showcase)
-
-        # Testimonials
-        // $this->load->model('catalog/testimonial');
-
-
-        // $data['testimonials'] = array();
-
-        // $results = $this->model_catalog_testimonial->getTestimonials(0, 6);
-
-        // foreach ($results as $result) {
-        //     if ($result['image']) {
-        //         $thumb = $this->model_tool_image->resize($result['image'], 150, 150);
-        //     } else {
-        //         $thumb = $this->model_tool_image->resize('default-image.png', 150, 150);
-        //     }
-
-        //     $data['testimonials'][] = array(
-        //         'name'          => $result['name'],
-        //         'description'   => trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))),
-        //         'designation'   => $result['designation'],
-        //         'thumb'         => $thumb
-        //     );
-        // }
-
-        # Facts
-        // $this->load->model('tool/online');
-
-        // $data['website_icon'] = $this->config->get('config_website_icon');
-        // $data['website'] = $this->config->get('config_website');
-
-        // $data['software_icon'] = $this->config->get('config_software_icon');
-        // $data['software'] = $this->config->get('config_software');
-
-        // $data['client_icon'] = $this->config->get('config_client_icon');
-        // $data['client'] = $this->config->get('config_client');
-
-        // $data['visitor_icon'] = $this->config->get('config_visitor_icon');
-        // $data['visitor'] = ($this->model_tool_online->getTotalOnlines() > 9999) ? '9999' : $this->model_tool_online->getTotalOnlines();
-
+        $results = $this->model_catalog_news->getNewss();
+       
+        foreach ($results as $result) {
+            $data['newss'][] = array(
+                'news_id' => $result['news_id'],
+                'name' => $result['name'],
+                'filename' => $result['filename'],
+                'mask' => $result['mask'],
+                'edit' => $this->url->link('news/news/edit', 'user_token=' . $this->session->data['user_token'] . '&news_id=' . $result['news_id'])
+            );
+        }
         # Blog
         # Contact
         $data['address'] = nl2br($this->config->get('config_address'));

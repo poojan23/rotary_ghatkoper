@@ -1,6 +1,6 @@
 <?php
 
-class ControllerInformationAbout extends PT_Controller
+class ControllerInformationHistory extends PT_Controller
 {
     public function index()
     {
@@ -38,6 +38,7 @@ class ControllerInformationAbout extends PT_Controller
             }
         }
 
+        
         $this->load->model('tool/online');
 
         $data['website_icon'] = $this->config->get('config_website_icon');
@@ -49,7 +50,6 @@ class ControllerInformationAbout extends PT_Controller
         $data['client_icon'] = $this->config->get('config_client_icon');
         $data['client'] = $this->config->get('config_client');
 
-        # Blog
 
         # Contact
         $data['address'] = nl2br($this->config->get('config_address'));
@@ -61,6 +61,6 @@ class ControllerInformationAbout extends PT_Controller
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('information/about', $data));
+        $this->response->setOutput($this->load->view('information/history', $data));
     }
 }

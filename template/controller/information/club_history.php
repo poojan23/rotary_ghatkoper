@@ -1,10 +1,10 @@
 <?php
 
-class ControllerInformationAbout extends PT_Controller
+class ControllerInformationClubHistory extends PT_Controller
 {
     public function index()
     {
-        $this->load->language('information/about');
+        $this->load->language('information/club');
 
         $this->document->setTitle($this->language->get('heading_title'));
         
@@ -17,7 +17,7 @@ class ControllerInformationAbout extends PT_Controller
 
         $data['breadcrumbs'][] = array(
             'text'  => $this->language->get('heading_title'),
-            'href'  => $this->url->link('information/about')
+            'href'  => $this->url->link('information/club')
         );
         
         $this->load->model('tool/image');
@@ -38,6 +38,52 @@ class ControllerInformationAbout extends PT_Controller
             }
         }
 
+        # Team
+        $this->load->model('catalog/team');
+
+        $data['teams'] = array();
+
+        $results = $this->model_catalog_team->getTeams(0, 6);
+
+        foreach ($results as $result) {
+            if ($result['image']) {
+                $thumb = $this->model_tool_image->resize($result['image'], 400, 500);
+            } else {
+                $thumb = $this->model_tool_image->resize('default-image.png', 400, 500);
+            }
+
+            $data['teams'][] = array(
+                'name'          => $result['name'],
+                'designation'   => $result['designation'],
+                'thumb'         => $thumb
+            );
+        }
+
+        # Watch (See Our Work Showcase)
+
+        # Testimonials
+        $this->load->model('catalog/testimonial');
+
+        $data['testimonials'] = array();
+
+        $results = $this->model_catalog_testimonial->getTestimonials(0, 6);
+
+        foreach ($results as $result) {
+            if ($result['image']) {
+                $thumb = $this->model_tool_image->resize($result['image'], 150, 150);
+            } else {
+                $thumb = $this->model_tool_image->resize('default-image.png', 150, 150);
+            }
+
+            $data['testimonials'][] = array(
+                'name'          => $result['name'],
+                'description'   => trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))),
+                'designation'   => $result['designation'],
+                'thumb'         => $thumb
+            );
+        }
+
+        # Facts
         $this->load->model('tool/online');
 
         $data['website_icon'] = $this->config->get('config_website_icon');
@@ -48,6 +94,9 @@ class ControllerInformationAbout extends PT_Controller
 
         $data['client_icon'] = $this->config->get('config_client_icon');
         $data['client'] = $this->config->get('config_client');
+
+//        $data['visitor_icon'] = $this->config->get('config_visitor_icon');
+//        $data['visitor'] = ($this->model_tool_online->getTotalOnlines() > 9999) ? '9999' : $this->model_tool_online->getTotalOnlines();
 
         # Blog
 
@@ -61,6 +110,6 @@ class ControllerInformationAbout extends PT_Controller
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('information/about', $data));
+        $this->response->setOutput($this->load->view('information/club_history', $data));
     }
 }

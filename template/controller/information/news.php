@@ -1,25 +1,24 @@
 <?php
 
-class ControllerInformationNews extends PT_Controller
-{
-    public function index()
-    {
+class ControllerInformationNews extends PT_Controller {
+
+    public function index() {
         $this->load->language('information/news');
 
         $this->document->setTitle($this->language->get('heading_title'));
-        
-         $data['breadcrumbs'] = array();
+
+        $data['breadcrumbs'] = array();
 
         $data['breadcrumbs'][] = array(
-            'text'  => $this->language->get('text_home'),
-            'href'  => $this->url->link('common/home')
+            'text' => $this->language->get('text_home'),
+            'href' => $this->url->link('common/home')
         );
 
         $data['breadcrumbs'][] = array(
-            'text'  => $this->language->get('heading_title'),
-            'href'  => $this->url->link('information/news')
+            'text' => $this->language->get('heading_title'),
+            'href' => $this->url->link('information/news')
         );
-        
+
         $this->load->model('tool/image');
 
         # Projects
@@ -38,48 +37,35 @@ class ControllerInformationNews extends PT_Controller
             }
         }
 
-        # Team
-        $this->load->model('catalog/team');
+        #News
+        $this->load->model('catalog/news');
+        $data['newss'] = array();
 
-        $data['teams'] = array();
-
-        $results = $this->model_catalog_team->getTeams(0, 6);
+        $results = $this->model_catalog_news->get_Newss();
 
         foreach ($results as $result) {
-            if ($result['image']) {
-                $thumb = $this->model_tool_image->resize($result['image'], 400, 500);
-            } else {
-                $thumb = $this->model_tool_image->resize('default-image.png', 400, 500);
-            }
-
-            $data['teams'][] = array(
-                'name'          => $result['name'],
-                'designation'   => $result['designation'],
-                'thumb'         => $thumb
+            $data['newss'][] = array(
+                'news_id' => $result['news_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'filename' => $result['filename'],
+                'mask' => $result['mask'],
+                'href' => $this->url->link('information/news/download', 'news_id=' . $result['news_id'])
             );
         }
 
-        # Watch (See Our Work Showcase)
+        $data['prv_newss'] = array();
 
-        # Testimonials
-        $this->load->model('catalog/testimonial');
-
-        $data['testimonials'] = array();
-
-        $results = $this->model_catalog_testimonial->getTestimonials(0, 6);
+        $results = $this->model_catalog_news->getPrvNewss();
 
         foreach ($results as $result) {
-            if ($result['image']) {
-                $thumb = $this->model_tool_image->resize($result['image'], 150, 150);
-            } else {
-                $thumb = $this->model_tool_image->resize('default-image.png', 150, 150);
-            }
-
-            $data['testimonials'][] = array(
-                'name'          => $result['name'],
-                'description'   => trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))),
-                'designation'   => $result['designation'],
-                'thumb'         => $thumb
+            $data['prv_newss'][] = array(
+                'news_id' => $result['news_id'],
+                'name' => $result['name'],
+                'date' => $result['date'],
+                'filename' => $result['filename'],
+                'mask' => $result['mask'],
+                'href' => $this->url->link('information/news/download', 'news_id=' . $result['news_id'])
             );
         }
 
@@ -97,9 +83,7 @@ class ControllerInformationNews extends PT_Controller
 
 //        $data['visitor_icon'] = $this->config->get('config_visitor_icon');
 //        $data['visitor'] = ($this->model_tool_online->getTotalOnlines() > 9999) ? '9999' : $this->model_tool_online->getTotalOnlines();
-
         # Blog
-
         # Contact
         $data['address'] = nl2br($this->config->get('config_address'));
         $data['telephone'] = $this->config->get('config_telephone');
@@ -112,4 +96,49 @@ class ControllerInformationNews extends PT_Controller
 
         $this->response->setOutput($this->load->view('information/news', $data));
     }
+
+    public function download() {
+        $this->load->model('catalog/news');
+
+        if (isset($this->request->get['news_id'])) {
+            $news_id = $this->request->get['news_id'];
+        } else {
+            $news_id = 0;
+        }
+
+        $news_info = $this->model_catalog_news->getNews($news_id);
+
+        if ($news_info) {
+            $file = DIR_DOWNLOAD . $news_info['filename'];
+            $mask = basename($news_info['mask']);
+
+            if (!headers_sent()) {
+                if (file_exists($file)) {
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename="' . ($mask ? $mask : basename($file)) . '"');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file));
+
+                    if (ob_get_level()) {
+                        ob_end_clean();
+                    }
+
+                    readfile($file, 'rb');
+
+                    //$this->model_catalog_news->updateViewed($news_info['news_id']);
+
+                    exit();
+                } else {
+                    exit("Error: Couldn't find the file $file!");
+                }
+            } else {
+                exit("Error: Headers already sent out!");
+            }
+        } else {
+            $this->response->redirect($this->url->link('product/news', '', true));
+        }
+    }
+
 }

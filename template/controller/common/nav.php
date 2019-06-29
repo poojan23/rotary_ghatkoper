@@ -24,13 +24,27 @@ class ControllerCommonNav extends PT_Controller
         $data['home'] = $this->url->link('common/home');
         $data['contact'] = $this->url->link('information/contact');
         $data['about'] = $this->url->link('information/about');
+        $data['history'] = $this->url->link('information/history');
+        $data['object'] = $this->url->link('information/object');
+        $data['president'] = $this->url->link('information/president');
+        $data['test'] = $this->url->link('information/four_way_test');
+        $data['governor'] = $this->url->link('information/governor');
+        $data['video'] = $this->url->link('information/video');
+        $data['link'] = $this->url->link('information/link');
+        $data['resource'] = $this->url->link('information/resource');
         $data['project'] = $this->url->link('information/project');
         $data['event'] = $this->url->link('information/event');
         $data['club'] = $this->url->link('information/club');
+        $data['club_history'] = $this->url->link('information/club_history');
+        $data['club_leadership'] = $this->url->link('information/club_leadership');
+        $data['donate_now'] = $this->url->link('information/donate_now');
+        $data['honorary_rotarian'] = $this->url->link('information/honorary_rotarian');
+        $data['join_us'] = $this->url->link('information/join_us');
+        $data['trust_detail'] = $this->url->link('information/trust_detail');
+        $data['our_service'] = $this->url->link('information/our_service');
         $data['news'] = $this->url->link('information/news');
         $data['download'] = $this->url->link('information/download');
-        // $data['club'] = $this->url->link('club/login');
-        // $data['admin'] = HTTP_SERVER.'admin';
+
         # information
         $this->load->model('information/information_group');
         $this->load->model('information/information');
